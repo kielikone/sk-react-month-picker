@@ -1,27 +1,27 @@
 import MonthPicker from "./components/MonthPicker/MonthPicker";
-import moment from "moment";
+import dayjs from "dayjs";
 
 function App() {
 	const presets = [
     {
       title: "This month",
-      start: moment().startOf("month").toDate(),
-      end: moment().endOf("month").toDate()
+      start: dayjs().startOf("month").toDate(),
+      end: dayjs().endOf("month").toDate()
     },
     {
       title: "Past 3 months",
-      start: moment().subtract(2, "month").startOf("month").toDate(),
-      end: moment().endOf("month").toDate()
+      start: dayjs().subtract(2, "month").startOf("month").toDate(),
+      end: dayjs().endOf("month").toDate()
     },
     {
       title: "Past 6 months",
-      start: moment().subtract(5, "month").startOf("month").toDate(),
-      end: moment().endOf("month").toDate()
+      start: dayjs().subtract(5, "month").startOf("month").toDate(),
+      end: dayjs().endOf("month").toDate()
     },
     {
       title: "This Year",
-      start: moment().startOf("year").toDate(),
-      end: moment().endOf("year").toDate()
+      start: dayjs().startOf("year").toDate(),
+      end: dayjs().endOf("year").toDate()
     }
   ];
 
