@@ -30,7 +30,7 @@ const Selector = ({ presets, onChange, highlightCol }) => {
   useEffect(() => {
     let ys = [];
     for (let year = 2010; year <= Number(dayjs().format("YYYY")); year++) {
-      const months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((month) => {
+      const months = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'].map((month) => {
         let date = dayjs(year + "-" + month + "-01 00:00:00").toDate();
         return {
           selected: false,
