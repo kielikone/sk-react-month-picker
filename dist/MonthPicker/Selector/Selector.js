@@ -1,9 +1,12 @@
-import moment from "moment";
+import dayjs from 'dayjs';
+import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
+import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import React, { memo, useState, useEffect } from "react";
 import { Modal, Presets, MonthPicker, Title, Preset, YearPicker, YearTitle, Months, Month } from "./Selector.styled";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronCircleLeft, faChevronCircleRight } from "@fortawesome/free-solid-svg-icons";
-
+dayjs.extend(isSameOrAfter);
+dayjs.extend(isSameOrBefore);
 const Selector = ({
   presets,
   onChange,
@@ -14,10 +17,9 @@ const Selector = ({
   const [selected, setSelected] = useState([]);
   useEffect(() => {
     let ys = [];
-
-    for (let year = 2010; year <= Number(moment().format("YYYY")); year++) {
+    for (let year = 2010; year <= Number(dayjs().format("YYYY")); year++) {
       const months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map(month => {
-        let date = moment(year + "-" + month + "-01 00:00:00").toDate();
+        let date = dayjs(year + "-" + month + "-01 00:00:00").toDate();
         return {
           selected: false,
           date
@@ -28,7 +30,6 @@ const Selector = ({
         months
       });
     }
-
     setYears(ys);
     setYearIndex(ys.length - 1);
   }, []);
@@ -37,36 +38,30 @@ const Selector = ({
       onChange(selected);
     }
   }, [selected]);
-
   const setSelectedLocal = (monthIndex, month) => {
     let ys = [...years];
     ys[yearIndex].months[monthIndex].selected = true;
     setYears(ys);
-
     if (!selected.length) {
       setSelected([month.date]);
     } else {
-      if (moment(selected[0]).isBefore(moment(month.date))) {
+      if (dayjs(selected[0]).isBefore(dayjs(month.date))) {
         setSelected([selected[0], month.date]);
       } else {
         setSelected([month.date, selected[0]]);
       }
     }
   };
-
   const pickPreset = ({
     start,
     end
   }) => {
     setSelected([start, end]);
   };
-
   const year = years[yearIndex];
-
   if (!year) {
     return null;
   }
-
   return /*#__PURE__*/React.createElement(Modal, null, presets && presets.length && /*#__PURE__*/React.createElement(Presets, null, /*#__PURE__*/React.createElement(Title, null, "PRESETS"), presets.map((p, i) => /*#__PURE__*/React.createElement(Preset, {
     onClick: e => pickPreset(p),
     key: i
@@ -91,12 +86,11 @@ const Selector = ({
   })), /*#__PURE__*/React.createElement(Months, null, year.months.map((m, i) => {
     return /*#__PURE__*/React.createElement(Month, {
       highlightCol: highlightCol,
-      className: m.selected === true || selected.length === 2 && moment(m.date).isSameOrAfter(moment(selected[0]), "month") && moment(m.date).isSameOrBefore(moment(selected[1]), "month") ? "selected" : "",
-      disabled: moment(m.date).isAfter(moment().endOf("month")),
+      className: m.selected === true || selected.length === 2 && dayjs(m.date).isSameOrAfter(dayjs(selected[0]), "month") && dayjs(m.date).isSameOrBefore(dayjs(selected[1]), "month") ? "selected" : "",
+      disabled: dayjs(m.date).isAfter(dayjs().endOf("month")),
       key: i,
       onClick: e => setSelectedLocal(i, m)
-    }, m.selected, " ", moment(m.date).format("MMM"));
+    }, m.selected, " ", dayjs(m.date).format("MMM"));
   }))));
 };
-
 export default /*#__PURE__*/memo(Selector);
