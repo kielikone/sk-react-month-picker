@@ -4,7 +4,7 @@ export const Modal = styled.div`
   border: #eee 1px solid;
   position: absolute;
   top: 35px;
-  right: 0;
+  left: 0;
   z-index: 99999;
   width: 425px;
   flex-direction: row;
